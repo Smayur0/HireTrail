@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum JobStatus {
+  APPLIED
+  INTERVIEW
+  OFFER
+  REJECTED
+  SAVED
+  WITHDRAWN
+}
+
+enum JobSource {
+  GMAIL
+  MANUAL
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  googleId     String   @unique
+  // store only refresh token hash (for Gmail sync)
+  refreshToken String?  @db.Text
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  applications JobApplication[]
+  messages     MailMessage[]
+  notes        Note[]
+}
+
+model JobApplication {
+  id          String @id @default(cuid())
+  userId      String
+  companyName String
+  jobTitle    String
+
+  status JobStatus @default(APPLIED)
+  source JobSource @default(MANUAL)
+
+  appliedDate DateTime?
+
+  // Future-ready fields
+  dedupKey      String? @unique
+  jobPostingUrl String?
+  externalJobId String?
+
+  isDeleted Boolean @default(false)
+
+  lastActivityAt DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  notes Note[]
+}
+
+model MailMessage {
+  id             String   @id @default(cuid())
+  userId         String
+  gmailMessageId String   @unique
+  gmailThreadId  String
+  fromEmail      String
+  subject        String
+  snippet        String?
+  bodyPlain      String?  @db.LongText
+  bodyHtml       String?  @db.LongText
+  internalDate   DateTime
+
+  parsedStatusHint JobStatus?
+  parsedCompany    String?
+  parsedJobTitle   String?
+
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model Note {
+  id            String  @id @default(cuid())
+  applicationId String
+  userId        String
+  content       String  @db.LongText
+  isDeleted     Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  application JobApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
