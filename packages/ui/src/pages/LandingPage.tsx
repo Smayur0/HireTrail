@@ -5,36 +5,18 @@ import { CheckCircle2, TrendingUp, Mail, LayoutDashboard, ArrowRight } from "luc
 
 const LandingPage: FC = () => {
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col">
-      {/* Navbar */}
-      <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <div className="flex items-center gap-2">
-            <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-              HireTrail
-            </span>
-          </div>
-          <div className="flex items-center gap-4">
-            <Link to="/login">
-              <Button variant="ghost">Sign In</Button>
-            </Link>
-            <Link to="/login">
-              <Button>Get Started</Button>
-            </Link>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-[calc(100vh-3.5rem)] bg-background flex flex-col">
 
       <main className="flex-1">
         {/* Hero Section */}
         <section className="relative overflow-hidden pt-16 pb-32 md:pt-24 lg:pt-32">
           <div className="container mx-auto px-4 relative z-10">
             <div className="mx-auto max-w-3xl text-center">
-              <h1 className="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl md:text-6xl">
+              <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl md:text-6xl">
                 Track your job search <br />
-                <span className="text-blue-600">without the chaos.</span>
+                <span className="text-primary">without the chaos.</span>
               </h1>
-              <p className="mt-6 text-lg text-slate-600 leading-relaxed">
+              <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
                 Automatically organize your applications from Gmail, manage your interview pipeline, and land your dream job faster.
               </p>
               <div className="mt-8 flex justify-center gap-4">
@@ -48,37 +30,37 @@ const LandingPage: FC = () => {
           </div>
           
           {/* Background Gradient */}
-          <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+          <div className="absolute inset-0 -z-10 h-full w-full bg-background bg-[radial-gradient(var(--border)_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
         </section>
 
         {/* Features Grid */}
-        <section className="py-24 bg-white border-t border-slate-100">
+        <section className="py-24 bg-background border-t border-border">
           <div className="container mx-auto px-4">
             <div className="grid md:grid-cols-3 gap-12">
-              <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-slate-50 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-                <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center mb-4 text-blue-600">
+              <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-card border border-border shadow-sm hover:shadow-md transition-shadow">
+                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 text-primary">
                   <Mail className="h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Gmail Integration</h3>
-                <p className="text-slate-600">
+                <p className="text-muted-foreground">
                   Automatically fetch and categorize applications from your inbox. No more manual entry.
                 </p>
               </div>
-              <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-slate-50 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-                <div className="h-12 w-12 rounded-full bg-indigo-100 flex items-center justify-center mb-4 text-indigo-600">
+              <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-card border border-border shadow-sm hover:shadow-md transition-shadow">
+                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 text-primary">
                   <LayoutDashboard className="h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Kanban Board</h3>
-                <p className="text-slate-600">
+                <p className="text-muted-foreground">
                   Visualize your pipeline. Drag and drop applications from Applied to Offer.
                 </p>
               </div>
-              <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-slate-50 border border-slate-100 shadow-sm hover:shadow-md transition-shadow">
-                <div className="h-12 w-12 rounded-full bg-emerald-100 flex items-center justify-center mb-4 text-emerald-600">
+              <div className="flex flex-col items-center text-center p-6 rounded-2xl bg-card border border-border shadow-sm hover:shadow-md transition-shadow">
+                <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 text-primary">
                   <TrendingUp className="h-6 w-6" />
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Insights</h3>
-                <p className="text-slate-600">
+                <p className="text-muted-foreground">
                   Track your response rates and optimize your strategy with built-in analytics.
                 </p>
               </div>
@@ -100,7 +82,7 @@ const LandingPage: FC = () => {
                     "Completely free for job seekers"
                   ].map((item, idx) => (
                     <li key={idx} className="flex items-center gap-3">
-                      <CheckCircle2 className="h-5 w-5 text-green-400" />
+                      <CheckCircle2 className="h-5 w-5 text-primary" />
                       <span className="text-slate-200 text-lg">{item}</span>
                     </li>
                   ))}
@@ -137,8 +119,8 @@ const LandingPage: FC = () => {
         </section>
       </main>
 
-      <footer className="bg-slate-50 py-12 border-t border-slate-200">
-        <div className="container mx-auto px-4 text-center text-slate-500">
+      <footer className="bg-background py-12 border-t border-border">
+        <div className="container mx-auto px-4 text-center text-muted-foreground">
           <p>© {new Date().getFullYear()} HireTrail. All rights reserved.</p>
         </div>
       </footer>
