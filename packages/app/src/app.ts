@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.routes.js";
 import mailRouter from "./routes/mail.routes.js";
 const app = express();
@@ -7,6 +8,7 @@ const app = express();
 // Middleware
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // CORS configuration
 const corsOptions = {
