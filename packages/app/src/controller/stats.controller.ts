@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import prisma from "../utils/prismaConnection.js";
+import { StatsService } from "../services/stats.service.js";
+
+const statsService = new StatsService();
 
 export const getJobStats = async (
   req: Request,
@@ -8,31 +10,9 @@ export const getJobStats = async (
 ) => {
   try {
     const userId = (req as any).user.id;
+    const stats = await statsService.getJobStats(userId);
 
-    // Get counts for each job status
-    const [applied, rejected, interview, total] = await Promise.all([
-      prisma.jobApplication.count({
-        where: { userId, status: "APPLIED", isDeleted: false },
-      }),
-      prisma.jobApplication.count({
-        where: { userId, status: "REJECTED", isDeleted: false },
-      }),
-      prisma.jobApplication.count({
-        where: { userId, status: "INTERVIEW", isDeleted: false },
-      }),
-      prisma.jobApplication.count({
-        where: { userId, isDeleted: false },
-      }),
-    ]);
-
-    res.json({
-      stats: {
-        applied,
-        rejected,
-        interview,
-        total,
-      },
-    });
+    res.json({ stats });
   } catch (error) {
     next(error);
   }

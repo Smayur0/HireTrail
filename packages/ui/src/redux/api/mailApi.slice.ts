@@ -12,7 +12,7 @@ export const mailApiSlice = apiSlice.injectEndpoints({
     }),
     getSavedEmails: builder.query<EmailsResponse, { limit?: number; offset?: number }>({
       query: ({ limit = 200, offset = 0 } = {}) => ({
-        url: "/emails",
+        url: "/mail/saved",
         method: "GET",
         params: { limit, offset },
       }),

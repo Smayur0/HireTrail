@@ -1,21 +1,24 @@
-import axios from "axios";
-import { MailList } from "../utils/types/index.js";
 import { google } from "googleapis";
 import prisma from "../utils/prismaConnection.js";
 
 export class MailService {
   private oauth2client: any;
 
-  constructor(refreshToken: string) {
-    this.oauth2client = new google.auth.OAuth2(
-      process.env.GOOGLE_CLIENT_ID,
-      process.env.GOOGLE_CLIENT_SECRET,
-      process.env.GOOGLE_REDIRECT_URL
-    );
-    this.oauth2client.setCredentials({ refresh_token: refreshToken });
+  constructor(refreshToken?: string) {
+    if (refreshToken) {
+      this.oauth2client = new google.auth.OAuth2(
+        process.env.GOOGLE_CLIENT_ID,
+        process.env.GOOGLE_CLIENT_SECRET,
+        process.env.GOOGLE_REDIRECT_URL
+      );
+      this.oauth2client.setCredentials({ refresh_token: refreshToken });
+    }
   }
 
   async getMailsList({ maxResults = 500, unreadonly = false } = {}) {
+    if (!this.oauth2client) {
+      throw new Error("OAuth2 client not initialized. Refresh token is required.");
+    }
     try {
       const gmail = google.gmail({ version: "v1", auth: this.oauth2client });
       let email: any[] = [];
@@ -54,11 +57,20 @@ export class MailService {
     const headers = message.payload?.headers || [];
     const subject = headers.find((h: any) => h.name === "Subject")?.value || "";
     const from = headers.find((h: any) => h.name === "From")?.value || "";
-    const date = headers.find((h: any) => h.name === "Date")?.value || "";
+    const internalDate = new Date(parseInt(message.internalDate));
 
     let body = this.extractBody(message.payload);
 
-    return { gmailId: message.id, subject, from, date, body };
+    return {
+      gmailMessageId: message.id,
+      gmailThreadId: message.threadId,
+      subject,
+      fromEmail: from,
+      snippet: message.snippet,
+      bodyPlain: body,
+      bodyHtml: "", // For now
+      internalDate,
+    };
   }
 
   private extractBody(payload: any): string {
@@ -74,8 +86,9 @@ export class MailService {
     }
     return "";
   }
-  async saveMails(userId: number, mails: any) {
-    prisma.mailMessage.createMany({
+
+  async saveMails(userId: string, mails: any[]) {
+    await prisma.mailMessage.createMany({
       data: mails.map((m: any) => ({
         userId,
         gmailMessageId: m.gmailMessageId,
@@ -90,7 +103,33 @@ export class MailService {
         parsedCompany: m.parsedCompany || null,
         parsedJobTitle: m.parsedJobTitle || null,
       })),
-      skipDuplicates: true, // avoids duplicate Gmail IDs
+      skipDuplicates: true,
     });
+  }
+
+  async getSavedEmails(userId: string, limit: number = 200, offset: number = 0) {
+    const emails = await prisma.mailMessage.findMany({
+      where: { userId },
+      orderBy: { internalDate: "desc" },
+      take: limit,
+      skip: offset,
+      select: {
+        id: true,
+        gmailMessageId: true,
+        fromEmail: true,
+        subject: true,
+        snippet: true,
+        internalDate: true,
+        parsedStatusHint: true,
+        parsedCompany: true,
+        parsedJobTitle: true,
+      },
+    });
+
+    const total = await prisma.mailMessage.count({
+      where: { userId },
+    });
+
+    return { emails, total };
   }
 }
