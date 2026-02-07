@@ -4,7 +4,6 @@ import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.routes.js";
 import mailRouter from "./routes/mail.routes.js";
 import statsRouter from "./routes/stats.routes.js";
-import emailsRouter from "./routes/emails.routes.js";
 const app = express();
 
 // Middleware
@@ -29,8 +28,5 @@ app.use("/mail", mailRouter);
 
 //stats
 app.use("/stats", statsRouter);
-
-//emails
-app.use("/emails", emailsRouter);
 
 export default app;
