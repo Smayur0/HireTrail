@@ -5,7 +5,8 @@ import { Route, Routes } from "react-router-dom";
 const PrivateRoutes = () => {
   return (
     <Routes>
-      <Route path="" element={<Dashboard />} />
+      <Route path="dashboard" element={<Dashboard />} />
+      <Route path="/" element={<Dashboard />} />
     </Routes>
   );
 };

@@ -1,25 +1,17 @@
-import useUser from "@/hooks/useUser";
 import { Navigate, Route, Routes } from "react-router-dom";
 import PrivateRoutes from "./private";
 import PublicRoutes from "./public";
 import MainLayout from "@/components/layout/MainLayout";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/store";
 
 const Root = () => {
-  const token = false;
-
-  const getToken = () => {
-    // if (token) {
-    //   return true;
-    // } else {
-    // logout();
-    return false;
-    // }
-  };
+  const isAuthenticated = useSelector((state: RootState) => state.user.isAuthenticated);
 
   return (
     <MainLayout>
       <Routes>
-        {getToken() ? (
+        {isAuthenticated ? (
           <>
             {/* -----------private routes-------------  */}
             <Route path="/app/*" element={<PrivateRoutes />} />
@@ -34,7 +26,7 @@ const Root = () => {
         <Route
           path="/*"
           element={
-            getToken() ? (
+            isAuthenticated ? (
               <Navigate replace to={`/app/dashboard`} />
             ) : (
               <Navigate replace to={`/login`} />

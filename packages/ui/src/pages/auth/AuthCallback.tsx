@@ -13,7 +13,7 @@ const AuthCallback = () => {
       try {
         const { data } = await api.get("/auth/me");
         dispatch(setCredentials({ user: data.user }));
-        navigate("/dashboard");
+        navigate("/app/dashboard");
       } catch (error) {
         console.error("Failed to fetch user", error);
         navigate("/login?error=auth_failed");
