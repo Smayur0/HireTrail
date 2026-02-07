@@ -45,7 +45,7 @@ export const googleCallback = async (
       sameSite: "strict", // Adjust based on frontend domain
     });
 
-    res.status(200).json({ message: "Login successful", user: saveUpdateUser }); 
+    res.redirect(`${frontendUrl}/#/auth/callback`);
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Unknown error";
     // return res.status(500).json({ error: message });
