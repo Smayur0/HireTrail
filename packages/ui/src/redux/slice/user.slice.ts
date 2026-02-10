@@ -7,6 +7,7 @@ const initialState: UserState = {
   isLoading: false,
   error: null,
   isAuthenticated: false,
+  isInitialized: false,
 };
 
 const userSlice = createSlice({
@@ -20,14 +21,22 @@ const userSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token || null;
       state.isAuthenticated = true;
+      state.isInitialized = true;
     },
     logout: (state) => {
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
+      state.isInitialized = true;
     },
+    setInitialized: (state, action: { payload: boolean }) => {
+      state.isInitialized = action.payload;
+    },
+    setLoading: (state, action: { payload: boolean }) => {
+      state.isLoading = action.payload;
+    }
   },
 });
 
-export const { setCredentials, logout } = userSlice.actions;
+export const { setCredentials, logout, setInitialized, setLoading } = userSlice.actions;
 export default userSlice.reducer;
