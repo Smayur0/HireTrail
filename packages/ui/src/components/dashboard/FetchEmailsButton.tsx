@@ -9,37 +9,39 @@ interface FetchEmailsButtonProps {
 
 const FetchEmailsButton: FC<FetchEmailsButtonProps> = ({ onFetch, isLoading, disabled }) => {
   return (
-    <div className="text-center py-12 px-4">
+    <div className="text-center py-20 px-4">
       <div className="max-w-md mx-auto">
-        <div className="mb-6">
-          <div className="text-6xl mb-4">📧</div>
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-            Fetch Your Emails
+        <div className="mb-8">
+          <div className="text-5xl mb-6 grayscale opacity-20">📧</div>
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">
+            Connect Your Inbox
           </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            This will fetch the last 200 emails from your Gmail inbox and analyze them for job applications.
+          <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+            Scan your Gmail activity for job applications. 
+            We'll analyze the last 200 messages in your inbox.
           </p>
         </div>
         <Button
           onClick={onFetch}
           disabled={isLoading || disabled}
-          className="w-full sm:w-auto px-8 py-3 text-base font-medium"
+          variant="outline"
+          className="w-full sm:w-auto h-12 px-10 text-base font-medium relative hover:scale-105 transition-all duration-300 border-gray-200 dark:border-gray-800 dark:bg-gray-900" 
         >
           {isLoading ? (
             <>
-              <span className="inline-block animate-spin mr-2">⏳</span>
-              Fetching Emails...
+              <span className="inline-block animate-spin mr-3">⏳</span>
+              Syncing...
             </>
           ) : (
             <>
-              <span className="mr-2">📥</span>
-              Fetch Mails
+              <span className="mr-3">📥</span>
+              Start Fetching
             </>
           )}
         </Button>
         {isLoading && (
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">
-            This may take a few moments...
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-6 font-medium animate-pulse">
+            Establishing secure connection...
           </p>
         )}
       </div>

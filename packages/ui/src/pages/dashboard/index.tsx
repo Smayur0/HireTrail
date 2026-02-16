@@ -44,27 +44,37 @@ const Dashboard: FC = () => {
   const showEmailSection = hasAttemptedFetch || (emailsData && emailsData.total > 0);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 sm:p-6 lg:p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-white dark:bg-gray-950 p-4 sm:p-8 lg:p-12">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-2">
-            Dashboard
-          </h1>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-            Track your job applications and manage your emails
-          </p>
+        <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">
+              Dashboard
+            </h1>
+            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">
+              Manage your job applications and tracking activity
+            </p>
+          </div>
+          <div className="flex gap-2">
+             <div className="px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 text-[10px] font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">
+                Status: Active
+             </div>
+          </div>
         </div>
 
         {/* Stats Section */}
-        <div className="mb-8">
-          <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4">
-            Application Statistics
-          </h2>
-          {statsError && (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-4">
-              <p className="text-sm text-red-800 dark:text-red-200">
-                Failed to load statistics. Please try refreshing the page.
+        <div className="mb-12">
+          <div className="flex items-center gap-4 mb-6">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-500">
+              Application Statistics
+            </h2>
+            <div className="h-[1px] flex-1 bg-gray-100 dark:bg-gray-800"></div>
+          </div>
+          {!!statsError && (
+            <div className="bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 rounded-lg p-4 mb-6">
+              <p className="text-xs font-semibold uppercase tracking-wider text-red-800 dark:text-red-400">
+                Failed to load statistics. Please refresh.
               </p>
             </div>
           )}
@@ -72,46 +82,53 @@ const Dashboard: FC = () => {
         </div>
 
         {/* Email Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
-              Email Inbox
-            </h2>
+        <div className="bg-white dark:bg-gray-950 rounded-2xl border border-gray-200 dark:border-gray-700 p-1 sm:p-1 overflow-hidden shadow-sm">
+          <div className="p-4 sm:p-6 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-gray-50/30 dark:bg-gray-900/10">
+            <div>
+                <h2 className="text-lg font-bold text-gray-900 dark:text-white tracking-tight">
+                  Email Inbox
+                </h2>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">
+                    Last synchronized: {new Date().toLocaleTimeString()}
+                </p>
+            </div>
             {showEmailSection && (
               <button
                 onClick={handleFetchMails}
                 disabled={isFetching}
-                className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium disabled:opacity-50"
+                className="px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors disabled:opacity-50"
               >
-                {isFetching ? "Refreshing..." : "Refresh"}
+                {isFetching ? "Refreshing..." : "Refresh Inbox"}
               </button>
             )}
           </div>
 
-          {/* Error Message */}
-          {fetchError && (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-4">
-              <p className="text-sm text-red-800 dark:text-red-200">
-                Failed to fetch emails. Please try again.
-              </p>
-            </div>
-          )}
+          <div className="p-4 sm:p-6">
+            {/* Error Message */}
+            {!!fetchError && (
+              <div className="bg-red-50 dark:bg-red-900/10 border border-red-100 dark:border-red-900/30 rounded-lg p-4 mb-6">
+                <p className="text-sm text-red-800 dark:text-red-400 text-center">
+                  Failed to fetch emails. Please try again.
+                </p>
+              </div>
+            )}
 
-          {/* Success Message */}
-          {fetchSuccess && (
-            <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-4">
-              <p className="text-sm text-green-800 dark:text-green-200">
-                Successfully fetched emails!
-              </p>
-            </div>
-          )}
+            {/* Success Message */}
+            {fetchSuccess && (
+              <div className="bg-green-50 dark:bg-green-900/10 border border-green-100 dark:border-green-900/30 rounded-lg p-4 mb-6">
+                <p className="text-sm text-green-800 dark:text-green-400 text-center">
+                  Successfully fetched emails!
+                </p>
+              </div>
+            )}
 
-          {/* Fetch Button or Email Table */}
-          {!showEmailSection ? (
-            <FetchEmailsButton onFetch={handleFetchMails} isLoading={isFetching} />
-          ) : (
-            <EmailTable emails={emails} isLoading={emailsLoading || isFetching} />
-          )}
+            {/* Fetch Button or Email Table */}
+            {!showEmailSection ? (
+              <FetchEmailsButton onFetch={handleFetchMails} isLoading={isFetching} />
+            ) : (
+              <EmailTable emails={emails} isLoading={emailsLoading || isFetching} />
+            )}
+          </div>
         </div>
       </div>
     </div>

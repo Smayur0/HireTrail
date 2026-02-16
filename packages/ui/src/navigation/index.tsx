@@ -7,6 +7,7 @@ import type { RootState } from "@/redux/store";
 import { useEffect } from "react";
 import { setCredentials, setInitialized } from "@/redux/slice/user.slice";
 import api from "@/lib/api";
+import Dashboard from "@/pages/dashboard";
 
 const Root = () => {
   const dispatch = useDispatch();
@@ -53,6 +54,7 @@ const Root = () => {
           <>
             {/* -----------public routes-------------  */}
             <Route path="/*" element={<PublicRoutes />} />
+            {/* <Route path="/*" element={<Dashboard />} /> */}
           </>
         )}
 

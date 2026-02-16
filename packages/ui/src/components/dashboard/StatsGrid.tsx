@@ -12,7 +12,7 @@ const StatsGrid: FC<StatsGridProps> = ({ stats, isLoading }) => {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="h-24 bg-gray-200 dark:bg-gray-700 animate-pulse rounded-lg"></div>
+          <div key={i} className="h-28 bg-zinc-100 dark:bg-zinc-900 animate-pulse rounded-xl border border-zinc-200 dark:border-zinc-800"></div>
         ))}
       </div>
     );
@@ -24,25 +24,21 @@ const StatsGrid: FC<StatsGridProps> = ({ stats, isLoading }) => {
         title="Total Applications"
         value={stats.total}
         icon="📊"
-        colorClass="bg-blue-500"
       />
       <StatsCard
         title="Applied"
         value={stats.applied}
         icon="📤"
-        colorClass="bg-green-500"
       />
       <StatsCard
         title="Interviews"
         value={stats.interview}
         icon="💼"
-        colorClass="bg-purple-500"
       />
       <StatsCard
         title="Rejected"
         value={stats.rejected}
         icon="❌"
-        colorClass="bg-red-500"
       />
     </div>
   );
